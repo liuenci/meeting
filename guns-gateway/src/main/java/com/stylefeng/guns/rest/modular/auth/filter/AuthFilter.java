@@ -1,7 +1,7 @@
 package com.stylefeng.guns.rest.modular.auth.filter;
 
-import com.stylefeng.guns.api.base.tips.ErrorTip;
-import com.stylefeng.guns.api.util.RenderUtil;
+import com.stylefeng.guns.core.base.tips.ErrorTip;
+import com.stylefeng.guns.core.util.RenderUtil;
 import com.stylefeng.guns.rest.common.exception.BizExceptionEnum;
 import com.stylefeng.guns.rest.config.properties.JwtProperties;
 import com.stylefeng.guns.rest.modular.auth.util.JwtTokenUtil;
