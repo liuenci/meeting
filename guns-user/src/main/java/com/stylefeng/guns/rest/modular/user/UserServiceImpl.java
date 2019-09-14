@@ -1,6 +1,7 @@
 package com.stylefeng.guns.rest.modular.user;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.stylefeng.guns.api.user.UserAPI;
 import com.stylefeng.guns.api.user.UserInfoModel;
 import com.stylefeng.guns.api.user.UserModel;
@@ -18,7 +19,15 @@ public class UserServiceImpl implements UserAPI{
 
     @Override
     public int login(String username, String password) {
-
+        MoocUserT moocUserT = new MoocUserT();
+        moocUserT.setUserName(username);
+        MoocUserT result = moocUserTMapper.selectOne(moocUserT);
+        if (result != null && result.getUuid() > 0) {
+            String md5Password = MD5Util.encrypt(password);
+            if (result.getUserPwd().equals(md5Password)) {
+                return result.getUuid();
+            }
+        }
         return 0;
     }
 
@@ -40,7 +49,13 @@ public class UserServiceImpl implements UserAPI{
 
     @Override
     public boolean checkUsername(String username) {
-        return false;
+        EntityWrapper<MoocUserT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("user_name",username);
+        Integer result = moocUserTMapper.selectCount(entityWrapper);
+        if (result != null && result > 0) {
+            return false;
+        }
+        return true;
     }
 
     @Override
