@@ -31,7 +31,7 @@ public class JwtProperties {
         return ignoreUrl;
     }
 
-    public void setIgnoreUser(String ignoreUrl) {
+    public void setIgnoreUrl(String ignoreUrl) {
         this.ignoreUrl = ignoreUrl;
     }
 
