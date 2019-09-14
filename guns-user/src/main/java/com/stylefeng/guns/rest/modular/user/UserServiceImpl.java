@@ -11,6 +11,8 @@ import com.stylefeng.guns.rest.common.persistence.model.MoocUserT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 @Service(interfaceClass = UserAPI.class)
 public class UserServiceImpl implements UserAPI{
@@ -64,14 +66,36 @@ public class UserServiceImpl implements UserAPI{
         UserInfoModel userInfoModel = do2UserInfo(moocUserT);
         return userInfoModel;
     }
-
+    private Date time2Date(long time){
+        Date date = new Date(time);
+        return date;
+    }
     @Override
     public UserInfoModel updateUserInfo(UserInfoModel userInfoModel) {
-        return null;
+        MoocUserT moocUserT = new MoocUserT();
+        moocUserT.setUuid(userInfoModel.getUuid());
+        moocUserT.setNickName(userInfoModel.getNickname());
+        moocUserT.setUserSex(userInfoModel.getSex());
+        moocUserT.setUpdateTime(time2Date(System.currentTimeMillis()));
+        moocUserT.setLifeState(Integer.parseInt(userInfoModel.getLifeState()));
+        moocUserT.setHeadUrl(userInfoModel.getHeadAddress());
+        moocUserT.setBirthday(userInfoModel.getBirthday());
+        moocUserT.setBiography(userInfoModel.getBiography());
+        moocUserT.setBeginTime(time2Date(userInfoModel.getBeginTime()));
+        moocUserT.setAddress(userInfoModel.getAddress());
+        moocUserT.setEmail(userInfoModel.getEmail());
+        moocUserT.setUserPhone(userInfoModel.getPhone());
+        Integer result = moocUserTMapper.updateById(moocUserT);
+        if (result > 0) {
+            UserInfoModel userInfo = getUserInfo(moocUserT.getUuid());
+            return userInfo;
+        }
+        return userInfoModel;
     }
 
     private UserInfoModel do2UserInfo(MoocUserT moocUserT) {
         UserInfoModel userInfoModel = new UserInfoModel();
+        userInfoModel.setUuid(moocUserT.getUuid());
         userInfoModel.setUsername(moocUserT.getUserName());
         userInfoModel.setSex(moocUserT.getUserSex());
         userInfoModel.setPhone(moocUserT.getUserPhone());
