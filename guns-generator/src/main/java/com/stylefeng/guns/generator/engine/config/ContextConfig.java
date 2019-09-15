@@ -1,7 +1,7 @@
 package com.stylefeng.guns.generator.engine.config;
 
 
-import com.stylefeng.guns.api.util.ToolUtil;
+import com.stylefeng.guns.core.util.ToolUtil;
 
 /**
  * 全局配置

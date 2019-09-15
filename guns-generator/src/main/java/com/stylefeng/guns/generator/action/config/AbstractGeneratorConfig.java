@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.generator.config.GlobalConfig;
 import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.stylefeng.guns.api.util.FileUtil;
+import com.stylefeng.guns.core.util.FileUtil;
 import com.stylefeng.guns.generator.engine.SimpleTemplateEngine;
 import com.stylefeng.guns.generator.engine.base.GunsTemplateEngine;
 import com.stylefeng.guns.generator.engine.config.ContextConfig;
