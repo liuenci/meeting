@@ -2,7 +2,9 @@ package com.stylefeng.guns.rest.modular.user;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.api.user.UserAPI;
+import com.stylefeng.guns.api.user.UserInfoModel;
 import com.stylefeng.guns.api.user.UserModel;
+import com.stylefeng.guns.rest.common.CurrentUser;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,5 +62,40 @@ public class UserController {
          *  1. 前端删除掉JWT
          */
         return ResponseVO.sussess("用户退出成功");
+    }
+
+    @GetMapping("getUserInfo")
+    public ResponseVO getUserInfo(){
+        String userId = CurrentUser.getCurrentUser();
+        if (userId != null && userId.trim().length() > 0) {
+            int uuid = Integer.parseInt(userId);
+            UserInfoModel userInfo = userAPI.getUserInfo(uuid);
+            if (userInfo != null) {
+                return ResponseVO.sussess(userInfo);
+            } else {
+                return ResponseVO.appFail("用户信息查询失败");
+            }
+        } else {
+            return ResponseVO.serviceFail("用户未登录");
+        }
+    }
+
+    @PostMapping("updateUserInfo")
+    public ResponseVO updateUserInfo(UserInfoModel userInfoModel){
+        String userId = CurrentUser.getCurrentUser();
+        if (userId != null && userId.trim().length() > 0) {
+            int uuid = Integer.parseInt(userId);
+            if (uuid != userInfoModel.getUuid()) {
+                return ResponseVO.serviceFail("请修改您个人的信息");
+            }
+            UserInfoModel userInfo = userAPI.getUserInfo(uuid);
+            if (userInfo != null) {
+                return ResponseVO.sussess(userInfo);
+            } else {
+                return ResponseVO.appFail("用户信息修改失败");
+            }
+        } else {
+            return ResponseVO.serviceFail("用户未登录");
+        }
     }
 }
