@@ -1,6 +1,6 @@
 package com.stylefeng.guns.generator.engine.base;
 
-import com.stylefeng.guns.api.util.ToolUtil;
+import com.stylefeng.guns.core.util.ToolUtil;
 import com.sun.javafx.PlatformUtil;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
