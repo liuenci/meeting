@@ -1,6 +1,6 @@
 package com.stylefeng.guns.config.properties;
 
-import com.stylefeng.guns.api.util.ToolUtil;
+import com.stylefeng.guns.core.util.ToolUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

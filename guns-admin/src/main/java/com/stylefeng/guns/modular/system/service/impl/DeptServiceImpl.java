@@ -3,7 +3,7 @@ package com.stylefeng.guns.modular.system.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.stylefeng.guns.api.node.ZTreeNode;
+import com.stylefeng.guns.core.node.ZTreeNode;
 import com.stylefeng.guns.modular.system.dao.DeptMapper;
 import com.stylefeng.guns.modular.system.model.Dept;
 import com.stylefeng.guns.modular.system.service.IDeptService;

@@ -1,8 +1,8 @@
 package com.stylefeng.guns.modular.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.stylefeng.guns.api.node.MenuNode;
-import com.stylefeng.guns.api.node.ZTreeNode;
+import com.stylefeng.guns.core.node.MenuNode;
+import com.stylefeng.guns.core.node.ZTreeNode;
 import com.stylefeng.guns.modular.system.model.Menu;
 import org.apache.ibatis.annotations.Param;
 

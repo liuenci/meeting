@@ -2,8 +2,8 @@ package com.stylefeng.guns.modular.code.factory;
 
 
 import com.stylefeng.guns.GunsApplication;
-import com.stylefeng.guns.api.CoreFlag;
-import com.stylefeng.guns.api.util.ToolUtil;
+import com.stylefeng.guns.core.CoreFlag;
+import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.generator.action.model.GenQo;
 
 import java.util.ArrayList;

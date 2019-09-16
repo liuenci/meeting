@@ -17,7 +17,7 @@ package com.stylefeng.guns.api.shiro;
 
 import com.stylefeng.guns.api.common.constant.Const;
 import com.stylefeng.guns.api.common.constant.factory.ConstantFactory;
-import com.stylefeng.guns.api.util.ToolUtil;
+import com.stylefeng.guns.core.util.ToolUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -121,8 +121,9 @@ public class ShiroKit {
      */
     public static void removeSessionAttr(String key) {
         Session session = getSession();
-        if (session != null)
+        if (session != null) {
             session.removeAttribute(key);
+        }
     }
 
     /**

@@ -1,13 +1,13 @@
 package com.stylefeng.guns.api.common.exception;
 
-import com.stylefeng.guns.api.exception.ServiceExceptionEnum;
+import com.stylefeng.guns.core.exception.ServiceExceptionEnum;
 
 /**
  * @Description 所有业务异常的枚举
  * @author fengshuonan
  * @date 2016年11月12日 下午5:04:51
  */
-public enum BizExceptionEnum implements ServiceExceptionEnum{
+public enum BizExceptionEnum implements ServiceExceptionEnum {
 
 	/**
 	 * 字典

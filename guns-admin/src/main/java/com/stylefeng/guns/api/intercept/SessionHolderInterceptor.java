@@ -1,7 +1,7 @@
 package com.stylefeng.guns.api.intercept;
 
-import com.stylefeng.guns.api.base.controller.BaseController;
-import com.stylefeng.guns.api.util.HttpSessionHolder;
+import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.util.HttpSessionHolder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;

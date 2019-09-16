@@ -1,7 +1,7 @@
 package com.stylefeng.guns.modular.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.stylefeng.guns.api.datascope.DataScope;
+import com.stylefeng.guns.core.datascope.DataScope;
 import com.stylefeng.guns.modular.system.model.User;
 import org.apache.ibatis.annotations.Param;
 

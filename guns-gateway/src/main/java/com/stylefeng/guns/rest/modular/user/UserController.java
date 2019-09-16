@@ -90,7 +90,8 @@ public class UserController {
             }
             UserInfoModel userInfo = userAPI.getUserInfo(uuid);
             if (userInfo != null) {
-                return ResponseVO.sussess(userInfo);
+                UserInfoModel result = userAPI.updateUserInfo(userInfoModel);
+                return ResponseVO.sussess(result);
             } else {
                 return ResponseVO.appFail("用户信息修改失败");
             }
