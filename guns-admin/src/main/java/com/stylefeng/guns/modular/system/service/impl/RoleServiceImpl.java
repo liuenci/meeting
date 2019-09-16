@@ -1,8 +1,8 @@
 package com.stylefeng.guns.modular.system.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.stylefeng.guns.api.node.ZTreeNode;
-import com.stylefeng.guns.api.util.Convert;
+import com.stylefeng.guns.core.node.ZTreeNode;
+import com.stylefeng.guns.core.util.Convert;
 import com.stylefeng.guns.modular.system.dao.RelationMapper;
 import com.stylefeng.guns.modular.system.dao.RoleMapper;
 import com.stylefeng.guns.modular.system.model.Relation;

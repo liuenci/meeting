@@ -2,7 +2,8 @@ package com.stylefeng.guns.api.util;
 
 import com.stylefeng.guns.api.common.constant.Const;
 import com.stylefeng.guns.config.properties.GunsProperties;
-import com.stylefeng.guns.api.node.MenuNode;
+import com.stylefeng.guns.core.node.MenuNode;
+import com.stylefeng.guns.core.util.SpringContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;

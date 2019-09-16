@@ -1,7 +1,7 @@
 package com.stylefeng.guns.api.common.constant.factory;
 
-import com.stylefeng.guns.api.support.StrKit;
-import com.stylefeng.guns.api.util.ToolUtil;
+import com.stylefeng.guns.core.support.StrKit;
+import com.stylefeng.guns.core.util.ToolUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
