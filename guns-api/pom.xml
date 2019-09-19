@@ -14,7 +14,12 @@
     <name>guns-api</name>
     <url>http://maven.apache.org</url>
 
-    <dependencies></dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <resources>
