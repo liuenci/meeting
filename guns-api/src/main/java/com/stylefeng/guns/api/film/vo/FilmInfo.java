@@ -14,5 +14,5 @@ public class FilmInfo implements Serializable {
     private Integer expectNum;
     private String showTime;
     private Integer boxNum;
-    private Integer score;
+    private String score;
 }
