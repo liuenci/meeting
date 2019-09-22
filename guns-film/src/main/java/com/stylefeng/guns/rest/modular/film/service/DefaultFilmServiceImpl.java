@@ -4,9 +4,9 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.api.film.FilmServiceApi;
-import com.stylefeng.guns.api.film.vo.BannerVo;
+import com.stylefeng.guns.api.film.vo.BannerVO;
 import com.stylefeng.guns.api.film.vo.FilmInfo;
-import com.stylefeng.guns.api.film.vo.FilmVo;
+import com.stylefeng.guns.api.film.vo.FilmVO;
 import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocBannerTMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocFilmTMapper;
@@ -26,11 +26,11 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     @Autowired
     private MoocFilmTMapper moocFilmTMapper;
     @Override
-    public List<BannerVo> getBanners() {
-        List<BannerVo> result = new ArrayList<>();
+    public List<BannerVO> getBanners() {
+        List<BannerVO> result = new ArrayList<>();
         List<MoocBannerT> moocBannerTS = moocBannerTMapper.selectList(null);
         moocBannerTS.forEach(moocBannerT -> {
-            BannerVo bannerVo = new BannerVo();
+            BannerVO bannerVo = new BannerVO();
             bannerVo.setBannerId(moocBannerT.getUuid() + "");
             bannerVo.setBannerUrl(moocBannerT.getBannerUrl());
             bannerVo.setBannerAddress(moocBannerT.getBannerAddress());
@@ -40,8 +40,8 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     }
 
     @Override
-    public FilmVo getHotFilms(boolean isLimit, int nums) {
-        FilmVo filmVo = new FilmVo();
+    public FilmVO getHotFilms(boolean isLimit, int nums) {
+        FilmVO filmVo = new FilmVO();
         List<FilmInfo> filmInfos = new ArrayList<>();
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
         entityWrapper.eq("film_status","1");
@@ -71,8 +71,8 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         return filmInfos;
     }
     @Override
-    public FilmVo getSoonFilms(boolean isLimit, int nums) {
-        FilmVo filmVo = new FilmVo();
+    public FilmVO getSoonFilms(boolean isLimit, int nums) {
+        FilmVO filmVo = new FilmVO();
         List<FilmInfo> filmInfos = new ArrayList<>();
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
         entityWrapper.eq("film_status","2");

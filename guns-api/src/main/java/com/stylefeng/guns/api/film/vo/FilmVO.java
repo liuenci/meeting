@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class FilmVo implements Serializable {
+public class FilmVO implements Serializable {
     private Integer filmNum;
     private List<FilmInfo> filmInfo;
 }
