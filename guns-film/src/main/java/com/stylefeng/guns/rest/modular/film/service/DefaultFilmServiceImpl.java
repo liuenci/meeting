@@ -4,9 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.api.film.FilmServiceApi;
-import com.stylefeng.guns.api.film.vo.BannerVO;
-import com.stylefeng.guns.api.film.vo.FilmInfo;
-import com.stylefeng.guns.api.film.vo.FilmVO;
+import com.stylefeng.guns.api.film.vo.*;
 import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocBannerTMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocFilmTMapper;
@@ -114,5 +112,20 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
         List<FilmInfo> filmInfos = getFilmInfos(moocFilmTS);
         return filmInfos;
+    }
+
+    @Override
+    public List<CatVO> getCats() {
+        return null;
+    }
+
+    @Override
+    public List<SourceVO> getSources() {
+        return null;
+    }
+
+    @Override
+    public List<YearVO> getYears() {
+        return null;
     }
 }
