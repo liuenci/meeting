@@ -50,9 +50,9 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
             filmInfos = getFilmInfos(moocFilmTS);
             filmVo.setFilmNum(filmInfos.size());
-
+            filmVo.setFilmInfo(filmInfos);
         }
-        return null;
+        return filmVo;
     }
     private List<FilmInfo> getFilmInfos(List<MoocFilmT> moocFilmTS) {
         List<FilmInfo> filmInfos = new ArrayList<>();
@@ -81,7 +81,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
             filmInfos = getFilmInfos(moocFilmTS);
             filmVo.setFilmNum(filmInfos.size());
-
+            filmVo.setFilmInfo(filmInfos);
         }
         return filmVo;
     }
