@@ -88,16 +88,31 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
 
     @Override
     public List<FilmInfo> getBoxRanking() {
-        return null;
+        EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("film_status","1");
+        Page<MoocFilmT> page = new Page<>(1, 10, "film_preSaleNum");
+        List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
+        List<FilmInfo> filmInfos = getFilmInfos(moocFilmTS);
+        return filmInfos;
     }
 
     @Override
     public List<FilmInfo> getExpectRanking() {
-        return null;
+        EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("film_status","2");
+        Page<MoocFilmT> page = new Page<>(1, 10, "film_box_office");
+        List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
+        List<FilmInfo> filmInfos = getFilmInfos(moocFilmTS);
+        return filmInfos;
     }
 
     @Override
     public List<FilmInfo> getTop() {
-        return null;
+        EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("film_status","1");
+        Page<MoocFilmT> page = new Page<>(1, 10, "film_score");
+        List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
+        List<FilmInfo> filmInfos = getFilmInfos(moocFilmTS);
+        return filmInfos;
     }
 }
