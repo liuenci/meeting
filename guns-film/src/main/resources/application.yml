@@ -28,7 +28,7 @@ mybatis-plus:
 
 spring:
   application:
-    name: meeting-user
+    name: meeting-film
   dubbo:
     server: true
     registry: zookeeper://localhost:2181
