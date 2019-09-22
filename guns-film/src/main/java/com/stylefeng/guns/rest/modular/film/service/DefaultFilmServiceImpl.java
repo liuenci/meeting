@@ -7,9 +7,13 @@ import com.stylefeng.guns.api.film.FilmServiceApi;
 import com.stylefeng.guns.api.film.vo.*;
 import com.stylefeng.guns.core.util.DateUtil;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocBannerTMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.MoocCatDictTMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocFilmTMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.MoocYearDictTMapper;
 import com.stylefeng.guns.rest.common.persistence.model.MoocBannerT;
+import com.stylefeng.guns.rest.common.persistence.model.MoocCatDictT;
 import com.stylefeng.guns.rest.common.persistence.model.MoocFilmT;
+import com.stylefeng.guns.rest.common.persistence.model.MoocYearDictT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +27,10 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     private MoocBannerTMapper moocBannerTMapper;
     @Autowired
     private MoocFilmTMapper moocFilmTMapper;
+    @Autowired
+    private MoocCatDictTMapper moocCatDictTMapper;
+    @Autowired
+    private MoocYearDictTMapper moocYearDictTMapper;
     @Override
     public List<BannerVO> getBanners() {
         List<BannerVO> result = new ArrayList<>();
@@ -116,7 +124,15 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
 
     @Override
     public List<CatVO> getCats() {
-        return null;
+        List<MoocCatDictT> moocCatDictTS = moocCatDictTMapper.selectList(null);
+        List<CatVO> catVOS = new ArrayList<>();
+        moocCatDictTS.forEach(moocCatDictT -> {
+            CatVO catVO = new CatVO();
+            catVO.setCatId(moocCatDictT.getUuid() + "");
+            catVO.setCatName(moocCatDictT.getShowName());
+            catVOS.add(catVO);
+        });
+        return catVOS;
     }
 
     @Override
@@ -126,6 +142,14 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
 
     @Override
     public List<YearVO> getYears() {
-        return null;
+        List<MoocYearDictT> moocYearDictTS = moocYearDictTMapper.selectList(null);
+        List<YearVO> yearVOS = new ArrayList<>();
+        moocYearDictTS.forEach(moocYearDictT -> {
+            YearVO yearVO = new YearVO();
+            yearVO.setYearId(moocYearDictT.getUuid() + "");
+            yearVO.setYearName(moocYearDictT.getShowName());
+            yearVOS.add(yearVO);
+        });
+        return yearVOS;
     }
 }
