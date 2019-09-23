@@ -6,14 +6,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.api.film.FilmServiceApi;
 import com.stylefeng.guns.api.film.vo.*;
 import com.stylefeng.guns.core.util.DateUtil;
-import com.stylefeng.guns.rest.common.persistence.dao.MoocBannerTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MoocCatDictTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MoocFilmTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MoocYearDictTMapper;
-import com.stylefeng.guns.rest.common.persistence.model.MoocBannerT;
-import com.stylefeng.guns.rest.common.persistence.model.MoocCatDictT;
-import com.stylefeng.guns.rest.common.persistence.model.MoocFilmT;
-import com.stylefeng.guns.rest.common.persistence.model.MoocYearDictT;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
+import com.stylefeng.guns.rest.common.persistence.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +25,8 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     private MoocCatDictTMapper moocCatDictTMapper;
     @Autowired
     private MoocYearDictTMapper moocYearDictTMapper;
+    @Autowired
+    private MoocSourceDictTMapper moocSourceDictTMapper;
     @Override
     public List<BannerVO> getBanners() {
         List<BannerVO> result = new ArrayList<>();
@@ -137,7 +133,15 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
 
     @Override
     public List<SourceVO> getSources() {
-        return null;
+        List<SourceVO> sourceVOS = new ArrayList<>();
+        List<MoocSourceDictT> moocSourceDictTS = moocSourceDictTMapper.selectList(null);
+        moocSourceDictTS.forEach(moocSourceDictT -> {
+            SourceVO sourceVO = new SourceVO();
+            sourceVO.setSourceId(moocSourceDictT.getUuid() + "");
+            sourceVO.setSourceName(moocSourceDictT.getShowName());
+            sourceVOS.add(sourceVO);
+        });
+        return sourceVOS;
     }
 
     @Override
