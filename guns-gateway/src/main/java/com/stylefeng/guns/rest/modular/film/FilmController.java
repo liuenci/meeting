@@ -3,6 +3,8 @@ package com.stylefeng.guns.rest.modular.film;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.api.film.FilmServiceApi;
 import com.stylefeng.guns.api.film.vo.CatVO;
+import com.stylefeng.guns.api.film.vo.SourceVO;
+import com.stylefeng.guns.api.film.vo.YearVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmConditionVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmIndexVo;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
@@ -51,12 +53,68 @@ public class FilmController {
             if (cat.getCatId().equals(catId)) {
                 flag = true;
                 cat.setActive(true);
+            } else {
+                cat.setActive(false);
             }
             if (!flag) {
                 cat.setActive(true);
-                catResult.add(cat);
+            } else {
+                cat.setActive(false);
             }
+            catResult.add(cat);
         }
-        return null;
+
+        flag = false;
+        List<SourceVO> sourceVOS = filmServiceApi.getSources();
+        List<SourceVO> sourceResult = new ArrayList<>();
+        SourceVO sourceVO = null;
+        for (SourceVO source : sourceVOS) {
+            if (source.getSourceId().equals("99")) {
+                sourceVO = source;
+                continue;
+            }
+            if (source.getSourceId().equals(sourceId)) {
+                flag = true;
+                source.setActive(true);
+            } else {
+                source.setActive(false);
+            }
+            sourceResult.add(source);
+            if (!flag) {
+                sourceVO.setActive(true);
+            } else {
+                sourceVO.setActive(false);
+            }
+            sourceResult.add(sourceVO);
+        }
+
+        flag = false;
+        List<YearVO> yearVOS = filmServiceApi.getYears();
+        List<YearVO> yearResult = new ArrayList<>();
+        YearVO yearVO = null;
+        for (YearVO year : yearVOS) {
+            if (year.getYearId().equals("99")) {
+                yearVO = year;
+                continue;
+            }
+            if (year.getYearId().equals(yearId)) {
+                flag = true;
+                year.setActive(true);
+            } else {
+                year.setActive(false);
+            }
+            yearResult.add(year);
+            if (!flag) {
+                yearVO.setActive(true);
+            } else {
+                yearVO.setActive(false);
+            }
+            yearResult.add(yearVO);
+        }
+
+        filmConditionVO.setCatInfo(catResult);
+        filmConditionVO.setSourceInfo(sourceResult);
+        filmConditionVO.setYearInfo(yearResult);
+        return ResponseVO.sussess(filmConditionVO);
     }
 }
