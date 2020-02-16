@@ -14,6 +14,8 @@ public class ResponseVO<M> {
     private String msg;
     private M data;
     private String imgPre;
+    private int nowPage;
+    private int totalPage;
 
     private ResponseVO(){}
 
@@ -21,6 +23,15 @@ public class ResponseVO<M> {
         ResponseVO responseVO = new ResponseVO();
         responseVO.setStatus(0);
         responseVO.setData(m);
+        return responseVO;
+    }
+    public static<M> ResponseVO sussess(int nowPage, int totalPage, String imgPre, M m){
+        ResponseVO responseVO = new ResponseVO();
+        responseVO.setStatus(0);
+        responseVO.setData(m);
+        responseVO.setImgPre(imgPre);
+        responseVO.setNowPage(nowPage);
+        responseVO.setTotalPage(totalPage);
         return responseVO;
     }
 
