@@ -27,6 +27,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     private MoocYearDictTMapper moocYearDictTMapper;
     @Autowired
     private MoocSourceDictTMapper moocSourceDictTMapper;
+
     @Override
     public List<BannerVO> getBanners() {
         List<BannerVO> result = new ArrayList<>();
@@ -46,7 +47,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         FilmVO filmVo = new FilmVO();
         List<FilmInfo> filmInfos = new ArrayList<>();
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("film_status","1");
+        entityWrapper.eq("film_status", "1");
         if (isLimit) {
             // 如果是，则限制条数、限制内容为热映影片
             Page<MoocFilmT> page = new Page<>(1, nums);
@@ -56,8 +57,22 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             filmVo.setFilmInfo(filmInfos);
         } else {
             // 如果不是，则是列表页，同样需要限制内容为热映影片
-            Page<MoocFilmT> page = new Page<>(nowPage, nums);
-            if(sourceId != 99) {
+            Page<MoocFilmT> page = null;
+            switch (sortId) {
+                case 1:
+                    page = new Page<>(nowPage, nums, "film_box_office");
+                    break;
+                case 2:
+                    page = new Page<>(nowPage, nums, "film_time");
+                    break;
+                case 3:
+                    page = new Page<>(nowPage, nums, "film_score");
+                    break;
+                default:
+                    page = new Page<>(nowPage, nums, "film_box_office");
+                    break;
+            }
+            if (sourceId != 99) {
                 entityWrapper.eq("film_source", sourceId);
             }
             if (yearId != 99) {
@@ -80,6 +95,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         }
         return filmVo;
     }
+
     private List<FilmInfo> getFilmInfos(List<MoocFilmT> moocFilmTS) {
         List<FilmInfo> filmInfos = new ArrayList<>();
         moocFilmTS.forEach(moocFilmT -> {
@@ -96,12 +112,13 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         });
         return filmInfos;
     }
+
     @Override
     public FilmVO getSoonFilms(boolean isLimit, int nums, int nowPage, int sortId, int sourceId, int yearId, int catId) {
         FilmVO filmVo = new FilmVO();
         List<FilmInfo> filmInfos = new ArrayList<>();
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("film_status","2");
+        entityWrapper.eq("film_status", "2");
         if (isLimit) {
             Page<MoocFilmT> page = new Page<>(1, nums);
             List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
@@ -110,8 +127,22 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             filmVo.setFilmInfo(filmInfos);
         } else {
             // 如果不是，则是列表页，同样需要限制内容为即将上映影片
-            Page<MoocFilmT> page = new Page<>(nowPage, nums);
-            if(sourceId != 99) {
+            Page<MoocFilmT> page = null;
+            switch (sortId) {
+                case 1:
+                    page = new Page<>(nowPage, nums, "film_preSaleNum");
+                    break;
+                case 2:
+                    page = new Page<>(nowPage, nums, "film_time");
+                    break;
+                case 3:
+                    page = new Page<>(nowPage, nums, "film_preSaleNum");
+                    break;
+                default:
+                    page = new Page<>(nowPage, nums, "film_preSaleNum");
+                    break;
+            }
+            if (sourceId != 99) {
                 entityWrapper.eq("film_source", sourceId);
             }
             if (yearId != 99) {
@@ -138,7 +169,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     @Override
     public List<FilmInfo> getBoxRanking() {
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("film_status","1");
+        entityWrapper.eq("film_status", "1");
         Page<MoocFilmT> page = new Page<>(1, 10, "film_preSaleNum");
         List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
         List<FilmInfo> filmInfos = getFilmInfos(moocFilmTS);
@@ -148,7 +179,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     @Override
     public List<FilmInfo> getExpectRanking() {
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("film_status","2");
+        entityWrapper.eq("film_status", "2");
         Page<MoocFilmT> page = new Page<>(1, 10, "film_box_office");
         List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
         List<FilmInfo> filmInfos = getFilmInfos(moocFilmTS);
@@ -158,7 +189,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     @Override
     public List<FilmInfo> getTop() {
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("film_status","1");
+        entityWrapper.eq("film_status", "1");
         Page<MoocFilmT> page = new Page<>(1, 10, "film_score");
         List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
         List<FilmInfo> filmInfos = getFilmInfos(moocFilmTS);
@@ -209,10 +240,24 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         FilmVO filmVo = new FilmVO();
         List<FilmInfo> filmInfos = new ArrayList<>();
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("film_status","3");
-        // 如果不是，则是列表页，同样需要限制内容为热映影片
-        Page<MoocFilmT> page = new Page<>(nowPage, nums);
-        if(sourceId != 99) {
+        entityWrapper.eq("film_status", "3");
+        // 如果不是，则是列表页，同样需要限制内容为经典影片
+        Page<MoocFilmT> page = null;
+        switch (sortId) {
+            case 1:
+                page = new Page<>(nowPage, nums, "film_box_office");
+                break;
+            case 2:
+                page = new Page<>(nowPage, nums, "film_time");
+                break;
+            case 3:
+                page = new Page<>(nowPage, nums, "film_score");
+                break;
+            default:
+                page = new Page<>(nowPage, nums, "film_box_office");
+                break;
+        }
+        if (sourceId != 99) {
             entityWrapper.eq("film_source", sourceId);
         }
         if (yearId != 99) {
