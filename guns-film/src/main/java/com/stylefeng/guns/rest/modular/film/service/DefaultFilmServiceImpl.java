@@ -108,6 +108,29 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             filmInfos = getFilmInfos(moocFilmTS);
             filmVo.setFilmNum(filmInfos.size());
             filmVo.setFilmInfo(filmInfos);
+        } else {
+            // 如果不是，则是列表页，同样需要限制内容为即将上映影片
+            Page<MoocFilmT> page = new Page<>(nowPage, nums);
+            if(sourceId != 99) {
+                entityWrapper.eq("film_source", sourceId);
+            }
+            if (yearId != 99) {
+                entityWrapper.eq("film_date", yearId);
+            }
+            if (catId != 99) {
+                String catStr = "%#" + catId + "#%";
+                entityWrapper.like("file_cat", catStr);
+            }
+            List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
+            filmInfos = getFilmInfos(moocFilmTS);
+            filmVo.setFilmNum(filmInfos.size());
+
+            // 需要总页数 = totalCounts / nums + 1
+            int totalCounts = moocFilmTMapper.selectCount(entityWrapper);
+            int totalPages = (totalCounts / nums) + 1;
+            filmVo.setTotalPages(totalPages);
+            filmVo.setNowPage(nowPage);
+            filmVo.setFilmInfo(filmInfos);
         }
         return filmVo;
     }
@@ -183,6 +206,32 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
 
     @Override
     public FilmVO getClassicFilms(int nums, int nowPage, int sortId, int sourceId, int yearId, int catId) {
-        return null;
+        FilmVO filmVo = new FilmVO();
+        List<FilmInfo> filmInfos = new ArrayList<>();
+        EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
+        entityWrapper.eq("film_status","3");
+        // 如果不是，则是列表页，同样需要限制内容为热映影片
+        Page<MoocFilmT> page = new Page<>(nowPage, nums);
+        if(sourceId != 99) {
+            entityWrapper.eq("film_source", sourceId);
+        }
+        if (yearId != 99) {
+            entityWrapper.eq("film_date", yearId);
+        }
+        if (catId != 99) {
+            String catStr = "%#" + catId + "#%";
+            entityWrapper.like("file_cat", catStr);
+        }
+        List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
+        filmInfos = getFilmInfos(moocFilmTS);
+        filmVo.setFilmNum(filmInfos.size());
+
+        // 需要总页数 = totalCounts / nums + 1
+        int totalCounts = moocFilmTMapper.selectCount(entityWrapper);
+        int totalPages = (totalCounts / nums) + 1;
+        filmVo.setTotalPages(totalPages);
+        filmVo.setNowPage(nowPage);
+        filmVo.setFilmInfo(filmInfos);
+        return filmVo;
     }
 }
