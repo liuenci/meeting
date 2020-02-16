@@ -50,19 +50,20 @@ public class FilmController {
                 cat = catVo;
                 continue;
             }
-            if (cat.getCatId().equals(catId)) {
+            if (catVo.getCatId().equals(catId)) {
                 flag = true;
-                cat.setActive(true);
+                catVo.setActive(true);
             } else {
-                cat.setActive(false);
+                catVo.setActive(false);
             }
-            if (!flag) {
-                cat.setActive(true);
-            } else {
-                cat.setActive(false);
-            }
-            catResult.add(cat);
+
         }
+        if (!flag) {
+            cat.setActive(true);
+        } else {
+            cat.setActive(false);
+        }
+        catResult.add(cat);
 
         flag = false;
         List<SourceVO> sourceVOS = filmServiceApi.getSources();
@@ -80,13 +81,14 @@ public class FilmController {
                 source.setActive(false);
             }
             sourceResult.add(source);
-            if (!flag) {
-                sourceVO.setActive(true);
-            } else {
-                sourceVO.setActive(false);
-            }
-            sourceResult.add(sourceVO);
+
         }
+        if (!flag) {
+            sourceVO.setActive(true);
+        } else {
+            sourceVO.setActive(false);
+        }
+        sourceResult.add(sourceVO);
 
         flag = false;
         List<YearVO> yearVOS = filmServiceApi.getYears();
@@ -104,14 +106,14 @@ public class FilmController {
                 year.setActive(false);
             }
             yearResult.add(year);
-            if (!flag) {
-                yearVO.setActive(true);
-            } else {
-                yearVO.setActive(false);
-            }
-            yearResult.add(yearVO);
-        }
 
+        }
+        if (!flag) {
+            yearVO.setActive(true);
+        } else {
+            yearVO.setActive(false);
+        }
+        yearResult.add(yearVO);
         filmConditionVO.setCatInfo(catResult);
         filmConditionVO.setSourceInfo(sourceResult);
         filmConditionVO.setYearInfo(yearResult);
