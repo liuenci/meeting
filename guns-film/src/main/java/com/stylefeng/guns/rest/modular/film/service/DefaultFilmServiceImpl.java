@@ -42,7 +42,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     }
 
     @Override
-    public FilmVO getHotFilms(boolean isLimit, int nums) {
+    public FilmVO getHotFilms(boolean isLimit, int nums, int nowPage, int sortId, int sourceId, int yearId, int catId) {
         FilmVO filmVo = new FilmVO();
         List<FilmInfo> filmInfos = new ArrayList<>();
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
@@ -73,7 +73,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         return filmInfos;
     }
     @Override
-    public FilmVO getSoonFilms(boolean isLimit, int nums) {
+    public FilmVO getSoonFilms(boolean isLimit, int nums, int nowPage, int sortId, int sourceId, int yearId, int catId) {
         FilmVO filmVo = new FilmVO();
         List<FilmInfo> filmInfos = new ArrayList<>();
         EntityWrapper<MoocFilmT> entityWrapper = new EntityWrapper<>();
@@ -155,5 +155,10 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             yearVOS.add(yearVO);
         });
         return yearVOS;
+    }
+
+    @Override
+    public FilmVO getClassicFilms(int nums, int nowPage, int sortId, int sourceId, int yearId, int catId) {
+        return null;
     }
 }
