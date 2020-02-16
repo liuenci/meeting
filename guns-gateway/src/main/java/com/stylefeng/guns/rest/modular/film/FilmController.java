@@ -3,6 +3,7 @@ package com.stylefeng.guns.rest.modular.film;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.api.film.FilmServiceApi;
 import com.stylefeng.guns.api.film.vo.CatVO;
+import com.stylefeng.guns.api.film.vo.FilmVO;
 import com.stylefeng.guns.api.film.vo.SourceVO;
 import com.stylefeng.guns.api.film.vo.YearVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmConditionVO;
@@ -25,8 +26,8 @@ public class FilmController {
     public ResponseVO<FilmIndexVo> getIndex() {
         FilmIndexVo filmIndexVo = new FilmIndexVo();
         filmIndexVo.setBanners(filmServiceApi.getBanners());
-        filmIndexVo.setHotFilms(filmServiceApi.getHotFilms(true, 8));
-        filmIndexVo.setSoonFilms(filmServiceApi.getSoonFilms(true, 8));
+        filmIndexVo.setHotFilms(filmServiceApi.getHotFilms(true, 8, 1, 1, 99, 99, 99));
+        filmIndexVo.setSoonFilms(filmServiceApi.getSoonFilms(true, 8, 1, 1, 99, 99, 99));
         filmIndexVo.setBoxRanking(filmServiceApi.getBoxRanking());
         filmIndexVo.setExpectRanking(filmServiceApi.getExpectRanking());
         filmIndexVo.setTop100(filmServiceApi.getTop());
@@ -34,9 +35,9 @@ public class FilmController {
     }
 
     @GetMapping(value = "getConditionList")
-    public ResponseVO getConditionList(@RequestParam(name = "catId",required = false, defaultValue = "99") String catId,
-                                       @RequestParam(name = "sourceId",required = false, defaultValue = "99") String sourceId,
-                                       @RequestParam(name = "yearId",required = false, defaultValue = "99") String yearId) {
+    public ResponseVO getConditionList(@RequestParam(name = "catId", required = false, defaultValue = "99") String catId,
+                                       @RequestParam(name = "sourceId", required = false, defaultValue = "99") String sourceId,
+                                       @RequestParam(name = "yearId", required = false, defaultValue = "99") String yearId) {
         FilmConditionVO filmConditionVO = new FilmConditionVO();
 
         boolean flag = false;
@@ -119,11 +120,52 @@ public class FilmController {
     }
 
     @RequestMapping(value = "getFilms", method = RequestMethod.GET)
-    public ResponseVO getFilms(@RequestBody FilmRequestVO filmRequestVO){
+    public ResponseVO getFilms(@RequestBody FilmRequestVO filmRequestVO) {
+        String imgPre = "http://img.meetingshop.cn/";
         // 根据 showType 判断影片查询类型
         // 根据 sortId 排序
         // 添加各种条件查询
         // 判断当前是第几页
-        return null;
+        FilmVO filmVO = null;
+        switch (filmRequestVO.getShowType()) {
+            case 1:
+                filmVO = filmServiceApi.getHotFilms(false,
+                        filmRequestVO.getPageSize(),
+                        filmRequestVO.getNowPage(),
+                        filmRequestVO.getSortId(),
+                        filmRequestVO.getSourceId(),
+                        filmRequestVO.getYearId(),
+                        filmRequestVO.getCatId());
+                break;
+            case 2:
+                filmVO = filmServiceApi.getSoonFilms(false,
+                        filmRequestVO.getPageSize(),
+                        filmRequestVO.getNowPage(),
+                        filmRequestVO.getSortId(),
+                        filmRequestVO.getSourceId(),
+                        filmRequestVO.getYearId(),
+                        filmRequestVO.getCatId());
+                break;
+            case 3:
+                filmVO = filmServiceApi.getClassicFilms(
+                        filmRequestVO.getPageSize(),
+                        filmRequestVO.getNowPage(),
+                        filmRequestVO.getSortId(),
+                        filmRequestVO.getSourceId(),
+                        filmRequestVO.getYearId(),
+                        filmRequestVO.getCatId());
+                break;
+            default:
+                filmVO = filmServiceApi.getHotFilms(false,
+                        filmRequestVO.getPageSize(),
+                        filmRequestVO.getNowPage(),
+                        filmRequestVO.getSortId(),
+                        filmRequestVO.getSourceId(),
+                        filmRequestVO.getYearId(),
+                        filmRequestVO.getCatId());
+                break;
+        }
+
+        return ResponseVO.sussess(filmVO.getNowPage(), filmVO.getTotalPages(), imgPre, filmVO.getFilmInfo());
     }
 }
