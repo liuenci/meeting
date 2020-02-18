@@ -236,6 +236,11 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     }
 
     @Override
+    public FilmDetailVO getFilmDetail(int searchType, String searchParam) {
+        return null;
+    }
+
+    @Override
     public FilmVO getClassicFilms(int nums, int nowPage, int sortId, int sourceId, int yearId, int catId) {
         FilmVO filmVo = new FilmVO();
         List<FilmInfo> filmInfos = new ArrayList<>();
