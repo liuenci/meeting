@@ -168,4 +168,12 @@ public class FilmController {
 
         return ResponseVO.sussess(filmVO.getNowPage(), filmVO.getTotalPages(), imgPre, filmVO.getFilmInfo());
     }
+
+    @RequestMapping(value = "films/{searchParam}", method = RequestMethod.GET)
+    public ResponseVO films(@PathVariable("searchParam") String searchParam, int searchType) {
+        // 根据searchType,判断查询条件
+        // 不同的查询类型，传入的条件会略有不同
+        // 查询影片的详细信息
+        return null;
+    }
 }
