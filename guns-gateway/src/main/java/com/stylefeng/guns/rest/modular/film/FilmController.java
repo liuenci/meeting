@@ -120,7 +120,7 @@ public class FilmController {
     }
 
     @RequestMapping(value = "getFilms", method = RequestMethod.GET)
-    public ResponseVO getFilms(@RequestBody FilmRequestVO filmRequestVO) {
+    public ResponseVO getFilms(FilmRequestVO filmRequestVO) {
         String imgPre = "http://img.meetingshop.cn/";
         // 根据 showType 判断影片查询类型
         // 根据 sortId 排序
