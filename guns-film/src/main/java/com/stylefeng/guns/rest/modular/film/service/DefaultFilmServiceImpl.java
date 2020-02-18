@@ -237,6 +237,8 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
 
     @Override
     public FilmDetailVO getFilmDetail(int searchType, String searchParam) {
+        // searchType 1-按名称 2-按ID查找
+
         return null;
     }
 
