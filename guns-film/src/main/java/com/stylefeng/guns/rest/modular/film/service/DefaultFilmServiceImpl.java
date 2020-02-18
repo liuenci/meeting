@@ -80,7 +80,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             }
             if (catId != 99) {
                 String catStr = "%#" + catId + "#%";
-                entityWrapper.like("file_cat", catStr);
+                entityWrapper.like("film_cats", catStr);
             }
             List<MoocFilmT> moocFilmTS = moocFilmTMapper.selectPage(page, entityWrapper);
             filmInfos = getFilmInfos(moocFilmTS);
