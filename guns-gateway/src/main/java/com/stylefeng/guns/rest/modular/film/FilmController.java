@@ -173,7 +173,7 @@ public class FilmController {
     public ResponseVO films(@PathVariable("searchParam") String searchParam, int searchType) {
         // 根据searchType,判断查询条件
         // 不同的查询类型，传入的条件会略有不同
-        // 查询影片的详细信息
+        // 查询影片的详细信息 -> Dubbo 的异步调用
         return null;
     }
 }

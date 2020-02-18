@@ -15,4 +15,7 @@ public interface FilmServiceApi {
     List<CatVO> getCats();
     List<SourceVO> getSources();
     List<YearVO> getYears();
+    // 根据影片ID或者影片名称获取影片信息
+    FilmDetailVO getFilmDetail(int searchType, String searchParam);
+    // 获取影片相关的其他信息【演员表、图片地址】
 }
