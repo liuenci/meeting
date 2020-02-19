@@ -9,4 +9,17 @@
         <result column="actor_img" property="actorImg" />
     </resultMap>
 
+    <select id="getActors" parameterType="java.lang.String" resultType="com.stylefeng.guns.api.film.vo.ActorVO">
+        SELECT
+            actor.actor_name as directorName,
+            actor.actor_img as imgAddress,
+            rela.role_name as roleName
+        FROM
+            mooc_actor_t actor,
+            mooc_film_actor_t rela
+        WHERE
+            actor.uuid = rela.actor_id
+        AND rela.film_id = #{filmId}
+    </select>
+
 </mapper>
