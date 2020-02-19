@@ -185,7 +185,6 @@ public class FilmController {
 
         // 不同的查询类型，传入的条件会略有不同
         // 查询影片的详细信息 -> Dubbo 的异步调用
-
         // 获取影片描述信息
         filmAsyncServiceApi.getFilmDesc(filmId);
         Future<FilmDescVO> filmDescVOFuture = RpcContext.getContext().getFuture();
