@@ -1,6 +1,7 @@
 package com.stylefeng.guns.rest.modular.film;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.stylefeng.guns.api.film.FilmAsyncServiceApi;
 import com.stylefeng.guns.api.film.FilmServiceApi;
 import com.stylefeng.guns.api.film.vo.*;
 import com.stylefeng.guns.rest.modular.film.vo.FilmConditionVO;
@@ -16,8 +17,12 @@ import java.util.List;
 @RequestMapping("/film/")
 public class FilmController {
     private static final String IMG_PRE = "http://img.liuencier.cn/";
+
     @Reference(interfaceClass = FilmServiceApi.class)
     private FilmServiceApi filmServiceApi;
+
+    @Reference(interfaceClass = FilmAsyncServiceApi.class, async = true)
+    private FilmAsyncServiceApi filmAsyncServiceApi;
 
     @GetMapping("getIndex")
     public ResponseVO<FilmIndexVo> getIndex() {
@@ -172,13 +177,13 @@ public class FilmController {
         FilmDetailVO filmDetailVO = filmServiceApi.getFilmDetail(searchType, searchParam);
         String filmId = filmDetailVO.getFilmId();
         // 获取影片描述信息
-        FilmDescVO filmDescVO = filmServiceApi.getFilmDesc(filmId);
+        FilmDescVO filmDescVO = filmAsyncServiceApi.getFilmDesc(filmId);
         // 获取图片信息
-        ImgVO imgVO = filmServiceApi.getImgs(filmId);
+        ImgVO imgVO = filmAsyncServiceApi.getImgs(filmId);
         // 获取导演信息
-        ActorVO directorVO = filmServiceApi.getDectInfo(filmId);
+        ActorVO directorVO = filmAsyncServiceApi.getDectInfo(filmId);
         // 获取演员信息
-        List<ActorVO> actorVOS = filmServiceApi.getActors(filmId);
+        List<ActorVO> actorVOS = filmAsyncServiceApi.getActors(filmId);
 
         InfoRequestVO infoRequestVO = new InfoRequestVO();
         // 组织Actor属性
