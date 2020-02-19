@@ -294,7 +294,8 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
 
     @Override
     public List<ActorVO> getActors(String filmId) {
-        return null;
+        List<ActorVO> actorVOS = moocActorTMapper.getActors(filmId);
+        return actorVOS;
     }
 
     @Override
