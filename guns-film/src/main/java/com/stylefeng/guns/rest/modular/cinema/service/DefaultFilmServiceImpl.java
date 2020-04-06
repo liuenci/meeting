@@ -1,4 +1,4 @@
-package com.stylefeng.guns.rest.modular.film.service;
+package com.stylefeng.guns.rest.modular.cinema.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
