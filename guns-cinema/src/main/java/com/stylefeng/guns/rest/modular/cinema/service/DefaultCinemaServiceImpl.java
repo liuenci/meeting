@@ -49,6 +49,8 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
             entityWrapper.eq("hall_ids", "%#" + cinemaQueryVO.getHallType() + "#%");
         }
         List<MoocCinemaT> moocCinemaTS = moocCinemaTMapper.selectPage(page, entityWrapper);
+
+        // 这里可以写成通过SQL查询的方式，只查询出想要的字段 TODO 就可以不用转化了
         for(MoocCinemaT moocCinemaT : moocCinemaTS){
             CinemaVO cinemaVO = new CinemaVO();
 
