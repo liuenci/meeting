@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.api.cinema.CinemaSeriveAPI;
 import com.stylefeng.guns.api.cinema.vo.*;
+import com.stylefeng.guns.rest.common.persistence.dao.MoocBrandDictTMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocCinemaTMapper;
+import com.stylefeng.guns.rest.common.persistence.model.MoocActorT;
+import com.stylefeng.guns.rest.common.persistence.model.MoocBrandDictT;
 import com.stylefeng.guns.rest.common.persistence.model.MoocCinemaT;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,8 +25,8 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
     private MoocCinemaTMapper moocCinemaTMapper;
 //    @Autowired
 //    private MoocAreaDictTMapper moocAreaDictTMapper;
-//    @Autowired
-//    private MoocBrandDictTMapper moocBrandDictTMapper;
+    @Autowired
+    private MoocBrandDictTMapper moocBrandDictTMapper;
 //    @Autowired
 //    private MoocHallDictTMapper moocHallDictTMapper;
 //    @Autowired
@@ -71,7 +74,32 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
 
     @Override
     public List<BrandVO> getBrands(int brandId) {
-        return null;
+        boolean flag = false;
+        List<BrandVO> brandVOS = new ArrayList<>();
+        MoocBrandDictT moocBrandDictT = moocBrandDictTMapper.selectById(brandId);
+        if (brandId == 99 || moocBrandDictT == null || moocBrandDictT.getUuid() == null) {
+            flag = true;
+        }
+        List<MoocBrandDictT> moocBrandDictTS = moocBrandDictTMapper.selectList(null);
+        for (MoocBrandDictT brand : moocBrandDictTS) {
+            BrandVO brandVO = new BrandVO();
+            brandVO.setBrandName(brand.getShowName());
+            brandVO.setBrandId(brand.getUuid()+"");
+            // 如果flag为true，则需要99，如为false，则匹配上的内容为active
+            if(flag){
+                if(brand.getUuid() == 99){
+                    brandVO.setIsActive(true);
+                }
+            }else{
+                if(brand.getUuid() == brandId){
+                    brandVO.setIsActive(true);
+                }
+            }
+
+            brandVOS.add(brandVO);
+        }
+
+        return brandVOS;
     }
 
     @Override
