@@ -7,10 +7,8 @@ import com.stylefeng.guns.api.cinema.vo.*;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocAreaDictTMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocBrandDictTMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocCinemaTMapper;
-import com.stylefeng.guns.rest.common.persistence.model.MoocActorT;
-import com.stylefeng.guns.rest.common.persistence.model.MoocAreaDictT;
-import com.stylefeng.guns.rest.common.persistence.model.MoocBrandDictT;
-import com.stylefeng.guns.rest.common.persistence.model.MoocCinemaT;
+import com.stylefeng.guns.rest.common.persistence.dao.MoocHallDictTMapper;
+import com.stylefeng.guns.rest.common.persistence.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -29,8 +27,8 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
     private MoocAreaDictTMapper moocAreaDictTMapper;
     @Autowired
     private MoocBrandDictTMapper moocBrandDictTMapper;
-//    @Autowired
-//    private MoocHallDictTMapper moocHallDictTMapper;
+    @Autowired
+    private MoocHallDictTMapper moocHallDictTMapper;
 //    @Autowired
 //    private MoocHallFilmInfoTMapper moocHallFilmInfoTMapper;
 //    @Autowired
@@ -140,7 +138,36 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
 
     @Override
     public List<HallTypeVO> getHallTypes(int hallType) {
-        return null;
+        boolean flag = false;
+        List<HallTypeVO> hallTypeVOS = new ArrayList<>();
+        // 判断brandId是否存在
+        MoocHallDictT moocHallDictT = moocHallDictTMapper.selectById(hallType);
+        // 判断brandId 是否等于 99
+        if(hallType == 99 || moocHallDictT==null || moocHallDictT.getUuid() == null){
+            flag = true;
+        }
+        // 查询所有列表
+        List<MoocHallDictT> moocHallDictTS = moocHallDictTMapper.selectList(null);
+        // 判断flag如果为true，则将99置为isActive
+        for(MoocHallDictT hall : moocHallDictTS){
+            HallTypeVO hallTypeVO = new HallTypeVO();
+            hallTypeVO.setHallTypeName(hall.getShowName());
+            hallTypeVO.setHallTypeId(hall.getUuid()+"");
+            // 如果flag为true，则需要99，如为false，则匹配上的内容为active
+            if(flag){
+                if(hall.getUuid() == 99){
+                    hallTypeVO.setActive(true);
+                }
+            }else{
+                if(hall.getUuid() == hallType){
+                    hallTypeVO.setActive(true);
+                }
+            }
+
+            hallTypeVOS.add(hallTypeVO);
+        }
+
+        return hallTypeVOS;
     }
 
     @Override
