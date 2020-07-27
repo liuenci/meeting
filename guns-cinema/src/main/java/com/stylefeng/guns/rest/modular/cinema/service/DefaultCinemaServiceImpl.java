@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.api.cinema.CinemaSeriveAPI;
 import com.stylefeng.guns.api.cinema.vo.*;
+import com.stylefeng.guns.rest.common.persistence.dao.MoocAreaDictTMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocBrandDictTMapper;
 import com.stylefeng.guns.rest.common.persistence.dao.MoocCinemaTMapper;
 import com.stylefeng.guns.rest.common.persistence.model.MoocActorT;
+import com.stylefeng.guns.rest.common.persistence.model.MoocAreaDictT;
 import com.stylefeng.guns.rest.common.persistence.model.MoocBrandDictT;
 import com.stylefeng.guns.rest.common.persistence.model.MoocCinemaT;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,8 @@ import java.util.List;
 public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
     @Autowired
     private MoocCinemaTMapper moocCinemaTMapper;
-//    @Autowired
-//    private MoocAreaDictTMapper moocAreaDictTMapper;
+    @Autowired
+    private MoocAreaDictTMapper moocAreaDictTMapper;
     @Autowired
     private MoocBrandDictTMapper moocBrandDictTMapper;
 //    @Autowired
@@ -104,7 +106,36 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
 
     @Override
     public List<AreaVO> getAreas(int areaId) {
-        return null;
+        boolean flag = false;
+        List<AreaVO> areaVOS = new ArrayList<>();
+        // 判断brandId是否存在
+        MoocAreaDictT moocAreaDictT = moocAreaDictTMapper.selectById(areaId);
+        // 判断brandId 是否等于 99
+        if(areaId == 99 || moocAreaDictT==null || moocAreaDictT.getUuid() == null){
+            flag = true;
+        }
+        // 查询所有列表
+        List<MoocAreaDictT> moocAreaDictTS = moocAreaDictTMapper.selectList(null);
+        // 判断flag如果为true，则将99置为isActive
+        for(MoocAreaDictT area : moocAreaDictTS){
+            AreaVO areaVO = new AreaVO();
+            areaVO.setAreaName(area.getShowName());
+            areaVO.setAreaId(area.getUuid()+"");
+            // 如果flag为true，则需要99，如为false，则匹配上的内容为active
+            if(flag){
+                if(area.getUuid() == 99){
+                    areaVO.setActive(true);
+                }
+            }else{
+                if(area.getUuid() == areaId){
+                    areaVO.setActive(true);
+                }
+            }
+
+            areaVOS.add(areaVO);
+        }
+
+        return areaVOS;
     }
 
     @Override
