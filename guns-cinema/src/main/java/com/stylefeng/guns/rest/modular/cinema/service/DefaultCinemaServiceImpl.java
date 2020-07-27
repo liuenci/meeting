@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.api.cinema.CinemaSeriveAPI;
 import com.stylefeng.guns.api.cinema.vo.*;
-import com.stylefeng.guns.rest.common.persistence.dao.MoocAreaDictTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MoocBrandDictTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MoocCinemaTMapper;
-import com.stylefeng.guns.rest.common.persistence.dao.MoocHallDictTMapper;
+import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,8 +28,8 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
     private MoocHallDictTMapper moocHallDictTMapper;
 //    @Autowired
 //    private MoocHallFilmInfoTMapper moocHallFilmInfoTMapper;
-//    @Autowired
-//    private MoocFieldTMapper moocFieldTMapper;
+    @Autowired
+    private MoocFieldTMapper moocFieldTMapper;
 
 
     @Override
@@ -187,7 +184,9 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
 
     @Override
     public List<FilmInfoVO> getFilmInfoByCinemaId(int cinemaId) {
-        return null;
+        List<FilmInfoVO> filmInfos = moocFieldTMapper.getFilmInfos(cinemaId);
+
+        return filmInfos;
     }
 
     @Override
