@@ -172,7 +172,17 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
 
     @Override
     public CinemaInfoVO getCinemaInfoById(int cinemaId) {
-        return null;
+        // 数据实体
+        MoocCinemaT moocCinemaT = moocCinemaTMapper.selectById(cinemaId);
+        // 将数据实体转换成业务实体
+        CinemaInfoVO cinemaInfoVO = new CinemaInfoVO();
+        cinemaInfoVO.setCinemaAddress(moocCinemaT.getCinemaAddress());
+        cinemaInfoVO.setImgUrl(moocCinemaT.getImgAddress());
+        cinemaInfoVO.setCinemaPhone(moocCinemaT.getCinemaPhone());
+        cinemaInfoVO.setCinemaName(moocCinemaT.getCinemaName());
+        cinemaInfoVO.setCinemaId(moocCinemaT.getUuid()+"");
+
+        return cinemaInfoVO;
     }
 
     @Override
