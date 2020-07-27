@@ -139,7 +139,7 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
         List<HallTypeVO> hallTypeVOS = new ArrayList<>();
         // 判断brandId是否存在
         MoocHallDictT moocHallDictT = moocHallDictTMapper.selectById(hallType);
-        // 判断brandId 是否等于 99
+        // 判断brandId 是否等于 99 ==99 是查询全部的数据
         if(hallType == 99 || moocHallDictT==null || moocHallDictT.getUuid() == null){
             flag = true;
         }
