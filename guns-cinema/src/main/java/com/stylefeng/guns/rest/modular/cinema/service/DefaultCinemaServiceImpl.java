@@ -205,6 +205,13 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
 
     @Override
     public OrderQueryVO getOrderNeeds(int fieldId) {
-        return null;
+        OrderQueryVO orderQueryVO = new OrderQueryVO();
+
+        MoocFieldT moocFieldT = moocFieldTMapper.selectById(fieldId);
+
+        orderQueryVO.setCinemaId(moocFieldT.getCinemaId()+"");
+        orderQueryVO.setFilmPrice(moocFieldT.getPrice()+"");
+
+        return orderQueryVO;
     }
 }

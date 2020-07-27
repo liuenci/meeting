@@ -12,4 +12,6 @@ import java.io.Serializable;
  **/
 @Data
 public class OrderQueryVO implements Serializable {
+    private String cinemaId;
+    private String filmPrice;
 }
