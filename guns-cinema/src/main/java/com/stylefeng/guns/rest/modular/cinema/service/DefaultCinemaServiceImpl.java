@@ -191,7 +191,9 @@ public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
 
     @Override
     public HallInfoVO getFilmFieldInfo(int fieldId) {
-        return null;
+        HallInfoVO hallInfoVO = moocFieldTMapper.getHallInfo(fieldId);
+
+        return hallInfoVO;
     }
 
     @Override
