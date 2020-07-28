@@ -2,7 +2,7 @@ package com.stylefeng.guns.rest.modular.cinema.service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
-import com.stylefeng.guns.api.cinema.CinemaSeriveAPI;
+import com.stylefeng.guns.api.cinema.CinemaServiceAPI;
 import com.stylefeng.guns.api.cinema.vo.*;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author: liuenci
  * @create: 2020-07-27 19:12
  **/
-public class DefaultCinemaServiceImpl implements CinemaSeriveAPI {
+public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
     @Autowired
     private MoocCinemaTMapper moocCinemaTMapper;
     @Autowired

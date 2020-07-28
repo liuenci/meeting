@@ -11,7 +11,7 @@ import java.util.List;
  * @author: liuenci
  * @create: 2020-04-06 16:23
  **/
-public interface CinemaSeriveAPI {
+public interface CinemaServiceAPI {
     //1、根据CinemaQueryVO，查询影院列表
     Page<CinemaVO> getCinemas(CinemaQueryVO cinemaQueryVO);
     //2、根据条件获取品牌列表[除了就99以外，其他的数字为isActive]
