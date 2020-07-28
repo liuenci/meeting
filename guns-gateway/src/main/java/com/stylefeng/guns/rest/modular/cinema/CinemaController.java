@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.api.cinema.CinemaSeriveAPI;
 import com.stylefeng.guns.api.cinema.vo.CinemaQueryVO;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @author: liuenci
  * @create: 2020-04-06 16:20
  **/
+@Slf4j
 @RestController
 @RequestMapping("/cinema/")
 public class CinemaController {
 
-    @Reference(interfaceClass = CinemaSeriveAPI.class, check = false)
+    @Reference(interfaceClass = CinemaSeriveAPI.class, connections = 10, cache = "lru", check = false)
     private CinemaSeriveAPI cinemaSeriveAPI;
-
-
+    
     @RequestMapping(value = "getCinemas")
     public ResponseVO getCinemas(CinemaQueryVO cinemaQueryVO) {
         return null;
