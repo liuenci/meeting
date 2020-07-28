@@ -4,7 +4,10 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.api.cinema.CinemaServiceAPI;
 import com.stylefeng.guns.api.cinema.vo.*;
+import com.stylefeng.guns.api.order.OrderServiceAPI;
 import com.stylefeng.guns.rest.modular.cinema.vo.CinemaConditionResponseVO;
+import com.stylefeng.guns.rest.modular.cinema.vo.CinemaFieldResponseVO;
+import com.stylefeng.guns.rest.modular.cinema.vo.CinemaFieldsResponseVO;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +29,10 @@ public class CinemaController {
 
     @Reference(interfaceClass = CinemaServiceAPI.class, connections = 10, cache = "lru", check = false)
     private CinemaServiceAPI cinemaServiceAPI;
+    @Reference(interfaceClass = OrderServiceAPI.class,check = false)
+    private OrderServiceAPI orderServiceAPI;
+
+    private static final String IMG_PRE = "http://img.meetingshop.cn/";
 
     @RequestMapping(value = "getCinemas")
     public ResponseVO getCinemas(CinemaQueryVO cinemaQueryVO) {
@@ -67,11 +74,44 @@ public class CinemaController {
 
     @RequestMapping(value = "getFields")
     public ResponseVO getFields(Integer cinemaId) {
-        return null;
+        try{
+
+            CinemaInfoVO cinemaInfoById = cinemaServiceAPI.getCinemaInfoById(cinemaId);
+
+            List<FilmInfoVO> filmInfoByCinemaId = cinemaServiceAPI.getFilmInfoByCinemaId(cinemaId);
+
+            CinemaFieldsResponseVO cinemaFieldResponseVO = new CinemaFieldsResponseVO();
+            cinemaFieldResponseVO.setCinemaInfo(cinemaInfoById);
+            cinemaFieldResponseVO.setFilmList(filmInfoByCinemaId);
+
+            return ResponseVO.success(IMG_PRE,cinemaFieldResponseVO);
+        }catch (Exception e){
+            log.error("获取播放场次失败",e);
+            return ResponseVO.serviceFail("获取播放场次失败");
+        }
     }
 
     @RequestMapping(value = "getFieldInfo", method = RequestMethod.POST)
     public ResponseVO getFieldInfo(Integer cinemaId, Integer fieldId) {
-        return null;
+        try{
+
+            CinemaInfoVO cinemaInfoById = cinemaServiceAPI.getCinemaInfoById(cinemaId);
+            FilmInfoVO filmInfoByFieldId = cinemaServiceAPI.getFilmInfoByFieldId(fieldId);
+            HallInfoVO filmFieldInfo = cinemaServiceAPI.getFilmFieldInfo(fieldId);
+
+            // 造几个销售的假数据，后续会对接订单接口
+//            filmFieldInfo.setSoldSeats(orderServiceAPI.getSoldSeatsByFieldId(fieldId));
+            filmFieldInfo.setSoldSeats("1,2,3");
+
+            CinemaFieldResponseVO cinemaFieldResponseVO = new CinemaFieldResponseVO();
+            cinemaFieldResponseVO.setCinemaInfo(cinemaInfoById);
+            cinemaFieldResponseVO.setFilmInfo(filmInfoByFieldId);
+            cinemaFieldResponseVO.setHallInfo(filmFieldInfo);
+
+            return ResponseVO.success(IMG_PRE,cinemaFieldResponseVO);
+        }catch (Exception e){
+            log.error("获取选座信息失败",e);
+            return ResponseVO.serviceFail("获取选座信息失败");
+        }
     }
 }
