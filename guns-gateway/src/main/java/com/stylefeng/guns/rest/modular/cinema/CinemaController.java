@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/cinema/")
 public class CinemaController {
 
-    @Reference(interfaceClass = CinemaServiceAPI.class, check = false)
+    @Reference(interfaceClass = CinemaServiceAPI.class, cache = "lru", connections = 10, check = false)
     private CinemaServiceAPI cinemaServiceAPI;
     @Reference(interfaceClass = OrderServiceAPI.class, check = false)
     private OrderServiceAPI orderServiceAPI;
