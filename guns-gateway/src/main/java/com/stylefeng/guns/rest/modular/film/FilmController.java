@@ -36,7 +36,7 @@ public class FilmController {
         filmIndexVo.setBoxRanking(filmServiceApi.getBoxRanking());
         filmIndexVo.setExpectRanking(filmServiceApi.getExpectRanking());
         filmIndexVo.setTop100(filmServiceApi.getTop());
-        return ResponseVO.sussess(IMG_PRE, filmIndexVo);
+        return ResponseVO.success(IMG_PRE, filmIndexVo);
     }
 
     @GetMapping(value = "getConditionList")
@@ -121,7 +121,7 @@ public class FilmController {
         filmConditionVO.setCatInfo(catResult);
         filmConditionVO.setSourceInfo(sourceResult);
         filmConditionVO.setYearInfo(yearResult);
-        return ResponseVO.sussess(filmConditionVO);
+        return ResponseVO.success(filmConditionVO);
     }
 
     @RequestMapping(value = "getFilms", method = RequestMethod.GET)
@@ -171,7 +171,7 @@ public class FilmController {
                 break;
         }
 
-        return ResponseVO.sussess(filmVO.getNowPage(), filmVO.getTotalPages(), imgPre, filmVO.getFilmInfo());
+        return ResponseVO.success(filmVO.getNowPage(), filmVO.getTotalPages(), imgPre, filmVO.getFilmInfo());
     }
 
     @RequestMapping(value = "films/{searchParam}", method = RequestMethod.GET)
@@ -211,6 +211,6 @@ public class FilmController {
         // 组织成返回值
         filmDetailVO.setInfo04(infoRequestVO);
 
-        return ResponseVO.sussess("http://img.meetingshop.cn/", filmDetailVO);
+        return ResponseVO.success("http://img.meetingshop.cn/", filmDetailVO);
     }
 }

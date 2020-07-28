@@ -27,7 +27,7 @@ public class UserController {
         }
         boolean isSuccess = userAPI.register(userModel);
         if (isSuccess) {
-            return ResponseVO.sussess("注册成功");
+            return ResponseVO.success("注册成功");
         } else {
             return ResponseVO.serviceFail("注册失败");
         }
@@ -39,7 +39,7 @@ public class UserController {
             // 当返回 true 的时候，表示用户名可用
             boolean notExists = userAPI.checkUsername(username);
             if (notExists) {
-                return ResponseVO.sussess("用户名不存在");
+                return ResponseVO.success("用户名不存在");
             } else {
                 return ResponseVO.serviceFail("用户名已存在");
             }
@@ -61,7 +61,7 @@ public class UserController {
          * 现状：
          *  1. 前端删除掉JWT
          */
-        return ResponseVO.sussess("用户退出成功");
+        return ResponseVO.success("用户退出成功");
     }
 
     @GetMapping("getUserInfo")
@@ -71,7 +71,7 @@ public class UserController {
             int uuid = Integer.parseInt(userId);
             UserInfoModel userInfo = userAPI.getUserInfo(uuid);
             if (userInfo != null) {
-                return ResponseVO.sussess(userInfo);
+                return ResponseVO.success(userInfo);
             } else {
                 return ResponseVO.appFail("用户信息查询失败");
             }
@@ -91,7 +91,7 @@ public class UserController {
             UserInfoModel userInfo = userAPI.getUserInfo(uuid);
             if (userInfo != null) {
                 UserInfoModel result = userAPI.updateUserInfo(userInfoModel);
-                return ResponseVO.sussess(result);
+                return ResponseVO.success(result);
             } else {
                 return ResponseVO.appFail("用户信息修改失败");
             }

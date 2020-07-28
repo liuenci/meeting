@@ -42,7 +42,7 @@ public class AuthController {
         if (validate) {
             final String randomKey = jwtTokenUtil.getRandomKey();
             final String token = jwtTokenUtil.generateToken("" + userId, randomKey);
-            return ResponseVO.sussess(new AuthResponse(token, randomKey));
+            return ResponseVO.success(new AuthResponse(token, randomKey));
         } else {
             return ResponseVO.serviceFail("用户名或密码错误");
         }
