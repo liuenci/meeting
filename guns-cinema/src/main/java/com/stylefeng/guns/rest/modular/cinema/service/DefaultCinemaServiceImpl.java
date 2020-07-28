@@ -1,5 +1,6 @@
 package com.stylefeng.guns.rest.modular.cinema.service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.stylefeng.guns.api.cinema.CinemaServiceAPI;
@@ -7,6 +8,7 @@ import com.stylefeng.guns.api.cinema.vo.*;
 import com.stylefeng.guns.rest.common.persistence.dao.*;
 import com.stylefeng.guns.rest.common.persistence.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
  * @author: liuenci
  * @create: 2020-07-27 19:12
  **/
+@Component
+@Service(interfaceClass = CinemaServiceAPI.class, executes = 10)
 public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
     @Autowired
     private MoocCinemaTMapper moocCinemaTMapper;
@@ -26,7 +30,7 @@ public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
     private MoocBrandDictTMapper moocBrandDictTMapper;
     @Autowired
     private MoocHallDictTMapper moocHallDictTMapper;
-//    @Autowired
+    //    @Autowired
 //    private MoocHallFilmInfoTMapper moocHallFilmInfoTMapper;
     @Autowired
     private MoocFieldTMapper moocFieldTMapper;
@@ -51,11 +55,11 @@ public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
         List<MoocCinemaT> moocCinemaTS = moocCinemaTMapper.selectPage(page, entityWrapper);
 
         // 这里可以写成通过SQL查询的方式，只查询出想要的字段 TODO 就可以不用转化了
-        for(MoocCinemaT moocCinemaT : moocCinemaTS){
+        for (MoocCinemaT moocCinemaT : moocCinemaTS) {
             CinemaVO cinemaVO = new CinemaVO();
 
-            cinemaVO.setUuid(moocCinemaT.getUuid()+"");
-            cinemaVO.setMinimumPrice(moocCinemaT.getMinimumPrice()+"");
+            cinemaVO.setUuid(moocCinemaT.getUuid() + "");
+            cinemaVO.setMinimumPrice(moocCinemaT.getMinimumPrice() + "");
             cinemaVO.setCinemaName(moocCinemaT.getCinemaName());
             cinemaVO.setAddress(moocCinemaT.getCinemaAddress());
 
@@ -81,14 +85,14 @@ public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
         for (MoocBrandDictT brand : moocBrandDictTS) {
             BrandVO brandVO = new BrandVO();
             brandVO.setBrandName(brand.getShowName());
-            brandVO.setBrandId(brand.getUuid()+"");
+            brandVO.setBrandId(brand.getUuid() + "");
             // 如果flag为true，则需要99，如为false，则匹配上的内容为active
-            if(flag){
-                if(brand.getUuid() == 99){
+            if (flag) {
+                if (brand.getUuid() == 99) {
                     brandVO.setIsActive(true);
                 }
-            }else{
-                if(brand.getUuid() == brandId){
+            } else {
+                if (brand.getUuid() == brandId) {
                     brandVO.setIsActive(true);
                 }
             }
@@ -106,23 +110,23 @@ public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
         // 判断brandId是否存在
         MoocAreaDictT moocAreaDictT = moocAreaDictTMapper.selectById(areaId);
         // 判断brandId 是否等于 99
-        if(areaId == 99 || moocAreaDictT==null || moocAreaDictT.getUuid() == null){
+        if (areaId == 99 || moocAreaDictT == null || moocAreaDictT.getUuid() == null) {
             flag = true;
         }
         // 查询所有列表
         List<MoocAreaDictT> moocAreaDictTS = moocAreaDictTMapper.selectList(null);
         // 判断flag如果为true，则将99置为isActive
-        for(MoocAreaDictT area : moocAreaDictTS){
+        for (MoocAreaDictT area : moocAreaDictTS) {
             AreaVO areaVO = new AreaVO();
             areaVO.setAreaName(area.getShowName());
-            areaVO.setAreaId(area.getUuid()+"");
+            areaVO.setAreaId(area.getUuid() + "");
             // 如果flag为true，则需要99，如为false，则匹配上的内容为active
-            if(flag){
-                if(area.getUuid() == 99){
+            if (flag) {
+                if (area.getUuid() == 99) {
                     areaVO.setActive(true);
                 }
-            }else{
-                if(area.getUuid() == areaId){
+            } else {
+                if (area.getUuid() == areaId) {
                     areaVO.setActive(true);
                 }
             }
@@ -140,23 +144,23 @@ public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
         // 判断brandId是否存在
         MoocHallDictT moocHallDictT = moocHallDictTMapper.selectById(hallType);
         // 判断brandId 是否等于 99 ==99 是查询全部的数据
-        if(hallType == 99 || moocHallDictT==null || moocHallDictT.getUuid() == null){
+        if (hallType == 99 || moocHallDictT == null || moocHallDictT.getUuid() == null) {
             flag = true;
         }
         // 查询所有列表
         List<MoocHallDictT> moocHallDictTS = moocHallDictTMapper.selectList(null);
         // 判断flag如果为true，则将99置为isActive
-        for(MoocHallDictT hall : moocHallDictTS){
+        for (MoocHallDictT hall : moocHallDictTS) {
             HallTypeVO hallTypeVO = new HallTypeVO();
             hallTypeVO.setHallTypeName(hall.getShowName());
-            hallTypeVO.setHallTypeId(hall.getUuid()+"");
+            hallTypeVO.setHallTypeId(hall.getUuid() + "");
             // 如果flag为true，则需要99，如为false，则匹配上的内容为active
-            if(flag){
-                if(hall.getUuid() == 99){
+            if (flag) {
+                if (hall.getUuid() == 99) {
                     hallTypeVO.setActive(true);
                 }
-            }else{
-                if(hall.getUuid() == hallType){
+            } else {
+                if (hall.getUuid() == hallType) {
                     hallTypeVO.setActive(true);
                 }
             }
@@ -177,7 +181,7 @@ public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
         cinemaInfoVO.setImgUrl(moocCinemaT.getImgAddress());
         cinemaInfoVO.setCinemaPhone(moocCinemaT.getCinemaPhone());
         cinemaInfoVO.setCinemaName(moocCinemaT.getCinemaName());
-        cinemaInfoVO.setCinemaId(moocCinemaT.getUuid()+"");
+        cinemaInfoVO.setCinemaId(moocCinemaT.getUuid() + "");
 
         return cinemaInfoVO;
     }
@@ -209,8 +213,8 @@ public class DefaultCinemaServiceImpl implements CinemaServiceAPI {
 
         MoocFieldT moocFieldT = moocFieldTMapper.selectById(fieldId);
 
-        orderQueryVO.setCinemaId(moocFieldT.getCinemaId()+"");
-        orderQueryVO.setFilmPrice(moocFieldT.getPrice()+"");
+        orderQueryVO.setCinemaId(moocFieldT.getCinemaId() + "");
+        orderQueryVO.setFilmPrice(moocFieldT.getPrice() + "");
 
         return orderQueryVO;
     }
