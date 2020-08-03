@@ -173,7 +173,8 @@ public class DefaultOrderServiceImpl implements OrderServiceAPI {
 
     @Override
     public OrderVO getOrderInfoById(String orderId) {
-        return null;
+        OrderVO orderVO = moocOrderTMapper.getOrderInfoById(orderId);
+        return orderVO;
     }
 
     @Override
