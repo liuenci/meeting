@@ -193,6 +193,15 @@ public class DefaultOrderServiceImpl implements OrderServiceAPI {
 
     @Override
     public boolean payFail(String orderId) {
-        return false;
+        MoocOrderT moocOrderT = new MoocOrderT();
+        moocOrderT.setUuid(orderId);
+        moocOrderT.setOrderStatus(2);
+
+        Integer integer = moocOrderTMapper.updateById(moocOrderT);
+        if (integer >= 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
