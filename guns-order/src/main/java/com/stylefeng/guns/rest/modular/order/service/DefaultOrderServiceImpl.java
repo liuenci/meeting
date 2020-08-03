@@ -162,7 +162,13 @@ public class DefaultOrderServiceImpl implements OrderServiceAPI {
 
     @Override
     public String getSoldSeatsByFieldId(Integer fieldId) {
-        return null;
+        if (fieldId == null) {
+            log.error("查询已售座位错误，未传入任何场次编号");
+            return null;
+        } else {
+            String solds = moocOrderTMapper.getSoldSeatsByFieldId(fieldId);
+            return solds;
+        }
     }
 
     @Override
