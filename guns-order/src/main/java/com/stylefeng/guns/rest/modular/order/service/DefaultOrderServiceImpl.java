@@ -179,7 +179,16 @@ public class DefaultOrderServiceImpl implements OrderServiceAPI {
 
     @Override
     public boolean paySuccess(String orderId) {
-        return false;
+        MoocOrderT moocOrderT = new MoocOrderT();
+        moocOrderT.setUuid(orderId);
+        moocOrderT.setOrderStatus(1);
+        Integer integer = moocOrderTMapper.updateById(moocOrderT);
+        if (integer >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     @Override
