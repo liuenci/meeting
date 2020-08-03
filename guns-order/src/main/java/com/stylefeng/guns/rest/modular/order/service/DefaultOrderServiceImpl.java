@@ -15,11 +15,13 @@ import com.stylefeng.guns.rest.common.persistence.dao.MoocOrderTMapper;
 import com.stylefeng.guns.rest.common.persistence.model.MoocOrderT;
 import com.stylefeng.guns.rest.common.utils.FTPUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -136,7 +138,26 @@ public class DefaultOrderServiceImpl implements OrderServiceAPI {
 
     @Override
     public Page<OrderVO> getOrderByUserId(Integer userId, Page<OrderVO> page) {
-        return null;
+        Page<OrderVO> result = new Page<>();
+        if (userId == null) {
+            log.error("订单查询业务失败，用户编号未传入");
+            return null;
+        } else {
+            List<OrderVO> orders = moocOrderTMapper.getOrdersByUserId(userId, page);
+            if (CollectionUtils.isEmpty(orders)) {
+                result.setTotal(0);
+                result.setRecords(new ArrayList<>());
+                return result;
+            } else {
+                // 获取订单总数
+                EntityWrapper<MoocOrderT> entityWrapper = new EntityWrapper<>();
+                entityWrapper.eq("order_user", userId);
+                Integer count = moocOrderTMapper.selectCount(entityWrapper);
+                result.setTotal(count);
+                result.setRecords(orders);
+                return result;
+            }
+        }
     }
 
     @Override
