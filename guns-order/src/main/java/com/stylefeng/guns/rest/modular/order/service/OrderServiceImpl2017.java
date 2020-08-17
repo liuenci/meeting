@@ -39,7 +39,7 @@ public class OrderServiceImpl2017 implements OrderServiceAPI {
 
     @Reference(interfaceClass = CinemaServiceAPI.class, check = false)
     private CinemaServiceAPI cinemaServiceAPI;
-    
+
     @Autowired
     private FTPUtils ftpUtils;
 
