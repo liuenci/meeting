@@ -97,4 +97,16 @@ public class OrderController {
         return ResponseVO.success(IMG_PRE, "");
     }
 
+    @RequestMapping(value = "getPayResult", method = RequestMethod.POST)
+    public ResponseVO getPayResult(@RequestParam("orderId") String orderId,
+                                   @RequestParam(name = "tryNums", required = false, defaultValue = "1") Integer tryNums) {
+        String currentUser = CurrentUser.getCurrentUser();
+        if (StringUtils.isBlank(currentUser)) {
+            return ResponseVO.serviceFail("用户未登陆");
+        } else {
+            // TODO 支付接口
+            return ResponseVO.success("支付成功");
+        }
+    }
+
 }
