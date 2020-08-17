@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -84,6 +85,16 @@ public class OrderController {
         } else {
             return ResponseVO.serviceFail("购票人数过多,请稍后重试");
         }
+    }
+
+    @RequestMapping(value = "getPayInfo", method = RequestMethod.POST)
+    public ResponseVO getPayInfo(@RequestParam("orderId") String orderId) {
+        String currentUser = CurrentUser.getCurrentUser();
+        if (StringUtils.isBlank(currentUser)) {
+            return ResponseVO.serviceFail("用户未登陆");
+        }
+        // TODO 订单二维码返回结果
+        return ResponseVO.success(IMG_PRE, "");
     }
 
 }
