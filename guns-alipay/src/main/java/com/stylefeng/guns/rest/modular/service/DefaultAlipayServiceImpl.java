@@ -6,6 +6,7 @@ import com.stylefeng.guns.api.alipay.AliPayServiceAPI;
 import com.stylefeng.guns.api.alipay.vo.AliPayInfoVO;
 import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
 import com.stylefeng.guns.api.order.OrderServiceAPI;
+import com.stylefeng.guns.core.util.FTPUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,9 @@ public class DefaultAlipayServiceImpl implements AliPayServiceAPI {
     private OrderServiceAPI orderServiceAPI;
 
     @Autowired
+    private FTPUtils ftpUtils;
+
+//    private static AlipayTradeService tradeService;
     @Override
     public AliPayInfoVO getQRCode(String orderId) {
         return null;

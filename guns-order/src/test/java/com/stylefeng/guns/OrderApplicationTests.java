@@ -1,7 +1,7 @@
 package com.stylefeng.guns;
 
 import com.stylefeng.guns.rest.OrderApplication;
-import com.stylefeng.guns.rest.common.utils.FTPUtils;
+import com.stylefeng.guns.core.util.FTPUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
