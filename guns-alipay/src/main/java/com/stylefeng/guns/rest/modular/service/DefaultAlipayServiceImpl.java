@@ -2,20 +2,31 @@ package com.stylefeng.guns.rest.modular.service;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.alipay.api.response.AlipayTradePrecreateResponse;
 import com.stylefeng.guns.api.alipay.AliPayServiceAPI;
 import com.stylefeng.guns.api.alipay.vo.AliPayInfoVO;
 import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
 import com.stylefeng.guns.api.order.OrderServiceAPI;
+import com.stylefeng.guns.api.order.vo.OrderVO;
 import com.stylefeng.guns.core.util.FTPUtils;
 import com.stylefeng.guns.rest.modular.alipay.config.Configs;
+import com.stylefeng.guns.rest.modular.alipay.model.ExtendParams;
+import com.stylefeng.guns.rest.modular.alipay.model.GoodsDetail;
+import com.stylefeng.guns.rest.modular.alipay.model.builder.AlipayTradePrecreateRequestBuilder;
+import com.stylefeng.guns.rest.modular.alipay.model.result.AlipayF2FPrecreateResult;
 import com.stylefeng.guns.rest.modular.alipay.service.AlipayMonitorService;
 import com.stylefeng.guns.rest.modular.alipay.service.AlipayTradeService;
 import com.stylefeng.guns.rest.modular.alipay.service.impl.AlipayMonitorServiceImpl;
 import com.stylefeng.guns.rest.modular.alipay.service.impl.AlipayTradeServiceImpl;
 import com.stylefeng.guns.rest.modular.alipay.service.impl.AlipayTradeWithHBServiceImpl;
+import com.stylefeng.guns.rest.modular.alipay.utils.ZxingUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: meeting
@@ -65,7 +76,107 @@ public class DefaultAlipayServiceImpl implements AliPayServiceAPI {
 
     @Override
     public AliPayInfoVO getQRCode(String orderId) {
+        // 获取二维码地址
+
         return null;
+    }
+
+    public String trade_precreate(String orderId) {
+        String filePath = "";
+
+        // 获取订单信息
+        OrderVO orderVO = orderServiceAPI.getOrderInfoById(orderId);
+
+        // (必填)商户网站订单系统中唯一订单号，64个字符以内，只能包含字母、数字、下划线，
+        // 须保证商户系统端不能重复，建议通过数据库 sequence 生成
+        String outTradeNo = orderId;
+
+        // (必填)订单标题，粗略描述用户的支付目的。如”xxx品牌xxx门店当面付扫码消费“
+        String subject = "meeting院线购票业务";
+
+        // (必填)订单总金额，单位为元，不能超过1亿元
+        // 如果同时传入了【打折金额】，【不可打折金额】，【订单总金额】三者，则必须满足如下条件：【订单总金额】=【打折金额】+【不可打折金额】
+        String totalAmount = orderVO.getOrderPrice();
+
+        // (可选)订单不可打折金额，可以配合商家平台配置折扣活动，如果酒水不参与打折，则将对应金额填写至此字段
+        // 如果该值未传入，但传入了【订单总金额】，【打折金额】，则该值默认为【订单总金额】-【打折金额】
+        String undiscountableAmount = "0";
+
+        // 卖家支付宝账号ID，用于支持一个签约账号下支持打款到不同的收款账号，（打款到sellerId对应的支付宝账号）
+        // 如果该字段为空，则默认与支付宝签约的商户的PID，也就是appid对应的PID
+        String sellerId = "";
+
+        // 订单描述，可以对交易或上坪进行一个详细地描述，比如填写“购买商品2件共15.00元”
+        String body = "购买电影票共花费" + orderVO.getOrderPrice();
+
+        // 商户操作员编号，添加此参数可以为商户操作员做销售统计
+        String operatorId = "liuenci";
+
+        // (必填)商户门店编号，通过门店号和商家后台可以配置精准到门店的折扣信息，详询支付宝技术支持
+        String storeId = "liuenci";
+
+        // 业务扩展参数，目前可以添加支付宝分配的系统商编号(通过setSysServiceProviderId方法)
+        ExtendParams extendParams = new ExtendParams();
+        extendParams.setSysServiceProviderId("2088100200300400500");
+
+        // 支付超时，定义为120分钟
+        String timeoutExpress = "120m";
+
+        // 商品明细列表，需填写购买上拼详细信息
+        List<GoodsDetail> goodsDetailList = new ArrayList<>();
+
+        // 创建一个商品信息，参数含义分别为商品Id(使用国标)、名称、单价(单位为分)、数量，如果需要添加商品类别，详见GoodsDetail
+        // GoodsDetail goods1 = GoodsDetail.newInstance("goods_id001", "xxx小面包", 1000, 1);
+//        // 创建好一个商品后添加至商品明细列表
+//        goodsDetailList.add(goods1);
+//
+//        // 继续创建并添加第一条商品信息，用户购买的产品为“黑人牙刷”，单价为5.00元，购买了两件
+//        GoodsDetail goods2 = GoodsDetail.newInstance("goods_id002", "xxx牙刷", 500, 2);
+//        goodsDetailList.add(goods2);
+
+        // 创建扫码支付请求builder,设置请求参数
+        AlipayTradePrecreateRequestBuilder builder = new AlipayTradePrecreateRequestBuilder()
+                .setSubject(subject)
+                .setTotalAmount(totalAmount)
+                .setOutTradeNo(outTradeNo)
+                .setUndiscountableAmount(undiscountableAmount)
+                .setSellerId(sellerId)
+                .setBody(body)
+                .setOperatorId(operatorId)
+                .setStoreId(storeId)
+                .setExtendParams(extendParams)
+                .setTimeoutExpress(timeoutExpress)
+                //                .setNotifyUrl("http://www.test-notify-url.com")//支付宝服务器主动通知商户服务器里指定的页面http路径,根据需要设置
+                .setGoodsDetailList(goodsDetailList);
+
+        AlipayF2FPrecreateResult result = tradeService.tradePrecreate(builder);
+        switch (result.getTradeStatus()) {
+            case SUCCESS:
+                log.info("支付宝预下单成功");
+                AlipayTradePrecreateResponse response = result.getResponse();
+
+                // 需要修改为运行机器上的路径
+                filePath = String.format("/var/ftp/pub/temp/qr-%s.png", response.getOutTradeNo());
+                String fileName = String.format("qr-%s.png", response.getOutTradeNo());
+                log.info("filePath:{}", filePath);
+                File qrCodeImage = ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
+
+                boolean isSuccess = ftpUtils.updateFile(fileName, qrCodeImage);
+                if (!isSuccess) {
+                    filePath = "";
+                    log.error("二维码上传失败");
+                }
+                break;
+            case FAILED:
+                log.error("支付宝预下单失败！！！");
+                break;
+            case UNKNOWN:
+                log.error("系统异常，预下单状态未知！！！");
+                break;
+            default:
+                log.error("不支持的交易状态，交易返回异常！！！");
+        }
+        return filePath;
     }
 
     @Override
