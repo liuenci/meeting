@@ -1,8 +1,10 @@
 package com.stylefeng.guns.rest.modular.order;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.stylefeng.guns.api.alipay.AliPayServiceAPI;
 import com.stylefeng.guns.api.order.OrderServiceAPI;
 import com.stylefeng.guns.api.order.vo.OrderVO;
 import com.stylefeng.guns.core.util.TokenBucket;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: meeting
@@ -34,10 +39,10 @@ public class OrderController {
     @Reference(interfaceClass = OrderServiceAPI.class, check = false, group = "order2017")
     private OrderServiceAPI orderServiceAPI2017;
 
-//    @Reference(interfaceClass = AliPayServiceAPI.class,check = false)
-//    private AliPayServiceAPI aliPayServiceAPI;
+    @Reference(interfaceClass = AliPayServiceAPI.class,check = false)
+    private AliPayServiceAPI aliPayServiceAPI;
 
-    public ResponseVO error(Integer fieldId, String soldSeats, String seatsName){
+    public ResponseVO error(Integer fieldId, String soldSeats, String seatsName) {
         return ResponseVO.serviceFail("抱歉，下单的人太多了，请稍后重试");
     }
 
@@ -85,6 +90,25 @@ public class OrderController {
         } else {
             return ResponseVO.serviceFail("购票人数过多,请稍后重试");
         }
+    }
+
+    @RequestMapping(value = "getOrderInfo", method = RequestMethod.POST)
+    public ResponseVO getOrderInfo(
+            @RequestParam(name = "nowPage", required = false, defaultValue = "1") Integer nowPage,
+            @RequestParam(name = "pageSize", required = false, defaultValue = "5") Integer pageSize
+    ) {
+        String currentUser = CurrentUser.getCurrentUser();
+        Page<OrderVO> page = new Page<>(nowPage, pageSize);
+        if (StringUtils.isNotBlank(currentUser)) {
+            Page<OrderVO> order2018 = orderServiceAPI.getOrderByUserId(Integer.parseInt(currentUser), page);
+            Page<OrderVO> order2017 = orderServiceAPI2017.getOrderByUserId(Integer.parseInt(currentUser), page);
+            long totalPages = order2018.getPages() + order2017.getPages();
+            List<OrderVO> orderVOS = new ArrayList<>();
+            orderVOS.addAll(order2017.getRecords());
+            orderVOS.addAll(order2018.getRecords());
+            return ResponseVO.success(nowPage, (int)totalPages, "", orderVOS);
+        }
+        return null;
     }
 
     @RequestMapping(value = "getPayInfo", method = RequestMethod.POST)
