@@ -1,14 +1,17 @@
 package com.stylefeng.guns.rest.modular.order;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.dubbo.rpc.RpcContext;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.stylefeng.guns.api.alipay.AliPayServiceAPI;
 import com.stylefeng.guns.api.alipay.vo.AliPayInfoVO;
+import com.stylefeng.guns.api.alipay.vo.AliPayResultVO;
 import com.stylefeng.guns.api.order.OrderServiceAPI;
 import com.stylefeng.guns.api.order.vo.OrderVO;
 import com.stylefeng.guns.core.util.TokenBucket;
+import com.stylefeng.guns.core.util.ToolUtil;
 import com.stylefeng.guns.rest.common.CurrentUser;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
@@ -128,9 +131,22 @@ public class OrderController {
         String currentUser = CurrentUser.getCurrentUser();
         if (StringUtils.isBlank(currentUser)) {
             return ResponseVO.serviceFail("用户未登陆");
+        }
+
+        // 将当前登陆人的信息传递给后端
+        RpcContext.getContext().setAttachment("userId", currentUser);
+        if (tryNums >= 4) {
+            return ResponseVO.serviceFail("订单支付失败,请稍后重试");
         } else {
-            // TODO 支付接口
-            return ResponseVO.success("支付成功");
+            AliPayResultVO aliPayResultVO = aliPayServiceAPI.getOrderStatus(orderId);
+            if (aliPayResultVO == null || ToolUtil.isEmpty(aliPayResultVO.getOrderId())) {
+                AliPayResultVO serviceFailVO = new AliPayResultVO();
+                serviceFailVO.setOrderId(orderId);
+                serviceFailVO.setOrderStatus(0);
+                serviceFailVO.setOrderMsg("支付不成功");
+                return ResponseVO.success(serviceFailVO);
+            }
+            return ResponseVO.success(aliPayResultVO);
         }
     }
 
