@@ -1,4 +1,15 @@
-# Guns V4.0
+# meeting
+```git小绿点修复脚本
+git config user.name “liuenci”
+git config user.email “liuencier@gmail.com”
+git filter-branch -f --env-filter "
+GIT_AUTHOR_NAME='liuenci';
+GIT_AUTHOR_EMAIL='liuencier@gmail.com';
+GIT_COMMITTER_NAME='liuenci';
+GIT_COMMITTER_EMAIL='liuencier@gmail.com'
+" HEAD
+git push -u -f origin master
+```
 
 ## 介绍
 Guns基于SpringBoot,致力于做更简洁的后台管理系统,完美整合springmvc + shiro + mybatis-plus + beetl!Guns项目代码简洁,注释丰富,上手容易,同时Guns包含许多基础模块(用户管理,角色管理,部门管理,字典管理等10个模块),可以直接作为一个后台管理系统的脚手架! 2018目标 `更简洁`,`更规范`!
