@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.stylefeng.guns.api.alipay.AliPayServiceAPI;
+import com.stylefeng.guns.api.alipay.vo.AliPayInfoVO;
 import com.stylefeng.guns.api.order.OrderServiceAPI;
 import com.stylefeng.guns.api.order.vo.OrderVO;
 import com.stylefeng.guns.core.util.TokenBucket;
@@ -117,8 +118,8 @@ public class OrderController {
         if (StringUtils.isBlank(currentUser)) {
             return ResponseVO.serviceFail("用户未登陆");
         }
-        // TODO 订单二维码返回结果
-        return ResponseVO.success(IMG_PRE, "");
+        AliPayInfoVO aliPayInfoVO = aliPayServiceAPI.getQRCode(orderId);
+        return ResponseVO.success(IMG_PRE, aliPayInfoVO);
     }
 
     @RequestMapping(value = "getPayResult", method = RequestMethod.POST)
