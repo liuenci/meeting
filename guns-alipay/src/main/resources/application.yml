@@ -9,8 +9,16 @@ jwt:
   auth-path: auth         #认证请求的路径
   md5-key: randomKey      #md5加密混淆key
 
+ftp:
+  host-name: 114.67.87.209
+  port: 21
+  user-name: ftpClient
+  password: ftpClient
+  upload-path : /qrcode
+
+
 server:
-  port: 8084 #项目端口
+  port: 8090 #项目端口
 
 mybatis-plus:
   mapper-locations: classpath*:com/stylefeng/guns/rest/**/mapping/*.xml
@@ -28,21 +36,21 @@ mybatis-plus:
 
 spring:
   application:
-    name: meeting-film
+    name: meeting-alipay
   dubbo:
     server: true
     registry: zookeeper://localhost:2181
     protocol:
       name: dubbo
-      port: 20881
+      port: 20890
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
-      username: root
-      password: 123456
-      filters: log4j,wall,mergeStat
+    url: jdbc:mysql://127.0.0.1:3306/guns_rest?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+    username: root
+    password: 123456
+    filters: log4j,wall,mergeStat
 
 logging:
   level.root: info
   level.com.stylefeng: debug
   path: logs/
-  file: guns-rest.log
+  file: guns-alipay.log

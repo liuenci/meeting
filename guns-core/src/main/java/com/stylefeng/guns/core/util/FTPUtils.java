@@ -20,11 +20,11 @@ import java.io.*;
 @Configuration
 @ConfigurationProperties(prefix = "ftp")
 public class FTPUtils {
-    private String hostName;
-    private Integer port;
-    private String userName;
-    private String password;
-    private String uploadPath;
+    private String hostName = "127.0.0.1";
+    private Integer port = 21;
+    private String userName = "ftp";
+    private String password = "ftp";
+    private String uploadPath = "C:\\home\\ftp";
 
     private FTPClient ftpClient = null;
 

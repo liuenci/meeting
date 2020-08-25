@@ -8,14 +8,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * <p>
- * 订单信息表 Mapper 接口
- * </p>
- *
- * @author jiangzh
- * @since 2018-09-24
- */
 public interface MoocOrder2018TMapper extends BaseMapper<MoocOrder2018T> {
 
     String getSeatsByFieldId(@Param("fieldId") String fieldId);

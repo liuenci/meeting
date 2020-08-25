@@ -31,7 +31,6 @@ import java.util.List;
  * @create: 2020-08-03 18:04
  **/
 @Slf4j
-@Component
 @Service(interfaceClass = OrderServiceAPI.class, group = "default")
 public class DefaultOrderServiceImpl implements OrderServiceAPI {
     @Autowired

@@ -44,3 +44,9 @@ logging:
   level.com.stylefeng: debug
   path: logs/
   file: guns-rest.log
+
+ftp:
+  host-name: 127.0.0.1
+  port: 21
+  user-name: ftp
+  password: ftp
